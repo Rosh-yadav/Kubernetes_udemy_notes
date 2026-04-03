@@ -207,3 +207,17 @@ Each pod gets a unique IP
 CNI plugins handle IP allocation and connectivity
 They configure bridges, veth pairs, and routing
 
+
+🔥 Interview Gold Answer
+
+If asked:
+
+👉 “How does Kubernetes Service work internally?”
+
+Say:
+
+Service is a virtual abstraction
+kube-proxy watches service creation
+It creates iptables/IPVS rules
+Traffic to service IP is redirected to pod IP
+
