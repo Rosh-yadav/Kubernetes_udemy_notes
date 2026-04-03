@@ -147,4 +147,23 @@ All containers share same ports
 * High performance 🚀
 
 ---
+🧠 Quick comparison (VERY IMPORTANT)
+
+| Feature       | Bridge | Host  |
+| ------------- | ------ | ----- |
+| Isolation     | ✅ Yes  | ❌ No  |
+| Own IP        | ✅ Yes  | ❌ No  |
+| Port conflict | ❌ No   | ✅ Yes |
+| Performance   | Normal | Fast  |
+| Default       | ✅ Yes  | ❌ No  |
+
+
+
+🎯 Interview question example
+
+👉 Q: Difference between host and bridge network?
+
+👉 Answer:
+
+Bridge network provides isolation with separate IPs for containers, while host network shares the host’s network stack. Host mode offers better performance but can cause port conflicts and lacks isolation
 
