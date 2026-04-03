@@ -165,3 +165,17 @@ Say:
 ---
 
 If you want, I can next explain **how CoreDNS actually works internally (very common interview question)** 🚀
+
+🔥 Interview Gold Answer
+
+If asked:
+
+👉 “What is rewrite-target in Ingress?”
+
+Say:
+
+It is an annotation used to modify the request path before forwarding to backend service
+Helps remove or change URL prefixes
+Prevents routing issues when backend apps don’t support those paths
+
+
