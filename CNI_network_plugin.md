@@ -194,3 +194,16 @@ Good question (interview favorite 👇)
 
 ---
 
+🔥 Interview Gold Line
+
+If asked:
+
+👉 “How does pod networking work in Kubernetes?”
+
+Say:
+
+Kubernetes requires a flat network model
+Each pod gets a unique IP
+CNI plugins handle IP allocation and connectivity
+They configure bridges, veth pairs, and routing
+
