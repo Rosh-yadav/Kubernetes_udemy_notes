@@ -127,3 +127,27 @@ ping db
 
 * **Corefile = config (logic)**
 * **/etc/hosts = actual entries (data)**
+
+⚡ 5. New Feature: Imperative Command
+
+👉 Instead of YAML, you can now create Ingress using command:
+
+kubectl create ingress <name> --rule="host/path=service:port"
+Example:
+kubectl create ingress ingress-test \
+--rule="wear.my-online-store.com/wear*=wear-service:80"
+
+👉 This means:
+
+Domain:
+wear.my-online-store.com
+Path:
+/wear
+Service:
+wear-service:80
+🔥 6. Why this is useful
+
+👉 In exams (like CKA):
+
+Faster than writing YAML
+Saves time ⏱️
