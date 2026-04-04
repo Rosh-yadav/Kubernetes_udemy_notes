@@ -221,3 +221,8 @@ kube-proxy watches service creation
 It creates iptables/IPVS rules
 Traffic to service IP is redirected to pod IP
 
+## 💡 Easy Analogy (Remember this)
+CRI → connects Kubernetes to container runtime
+CNI → connects Kubernetes to networking
+CSI → connects Kubernetes to storage
+
