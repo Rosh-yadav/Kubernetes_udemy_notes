@@ -1,4 +1,3 @@
-Got it! This lecture is essentially **expanding RBAC from namespace-scoped resources to cluster-scoped resources**. Let me explain clearly:
 
 ---
 
@@ -104,14 +103,3 @@ roleRef:
 
 ---
 
-✅ **Takeaways**
-
-* ClusterRoles are **powerful** because they can grant access to all namespaces or cluster resources.
-* Use **ClusterRoleBinding** to link a user to a ClusterRole.
-* Roles are still useful for **restricted, namespace-specific access**.
-
----
-
-If you want, I can make a **diagram showing Role vs ClusterRole + RoleBinding vs ClusterRoleBinding**, which makes this **super easy to visualize** in one glance.
-
-Do you want me to make that diagram?
