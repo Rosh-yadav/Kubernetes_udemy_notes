@@ -236,3 +236,80 @@ You can say:
 > To use a PVC in a Pod, we reference the claim in the volumes section using persistentVolumeClaim and then mount it inside the container using volumeMounts.
 >  The Pod does not directly use the Persistent Volume; it uses the PVC, which is already bound to a PV.
 
+
+
+This lecture is about **StorageClass**, and it’s one of the **most important real-world Kubernetes concepts**. I’ll simplify it step by step so you fully get it 👇
+
+
+# 🔹 5. How StorageClass Works
+
+### Step 1: Create StorageClass
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gold
+provisioner: kubernetes.io/gce-pd
+```
+
+👉 This tells Kubernetes:
+
+* Use Google Cloud disk
+* Auto-provision storage
+
+---
+
+### Step 2: Create PVC (Important)
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  storageClassName: gold
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
+
+👉 Now automatically:
+
+* Disk is created in cloud
+* PV is created
+* PVC is bound
+
+---
+
+# 🔹 6. Multiple Storage Classes (Key Concept)
+
+You can create **different types of storage**
+
+Example:
+
+| Class    | Type              |
+| -------- | ----------------- |
+| silver   | normal disk       |
+| gold     | SSD               |
+| platinum | SSD + replication |
+
+👉 This is why it's called **“Storage Class”**
+
+---
+
+
+
+👉 **“What is StorageClass?”**
+
+You can say:
+
+> StorageClass is a Kubernetes resource that enables dynamic provisioning of storage. It defines the provisioner and parameters for creating storage automatically
+>  when a PVC is created. It eliminates the need for manual PV creation and allows different classes of storage like SSD or standard disks.
+
+---
+
+
+
