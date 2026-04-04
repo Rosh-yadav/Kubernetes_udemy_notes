@@ -1,0 +1,327 @@
+##  this lecture is just explaining **basic Docker security concepts** so you can understand **Kubernetes Security Context later**.
+---
+
+# 🧠 BIG IDEA
+
+👉 Containers are **NOT fully isolated like VMs**
+👉 They share the **same OS kernel**
+👉 So security is very important ⚠️
+
+---
+
+# 🧱 1. How Containers Are Isolated
+
+### 👉 Using **Namespaces**
+
+* Host has its own processes
+* Each container has its own “view”
+
+---
+
+### 🔍 Example:
+
+Inside container:
+
+```bash
+ps
+```
+
+👉 You see:
+
+```
+PID 1 → sleep process
+```
+
+But on host:
+
+```bash
+ps
+```
+
+👉 You see:
+
+* OS processes
+* Docker processes
+* Container process (with different PID)
+
+---
+
+### 🧠 Meaning:
+
+* Same process
+* Different visibility
+
+👉 This is called **process isolation**
+
+---
+
+# 👤 2. Users in Docker
+
+### By default:
+
+👉 Containers run as **root user** ❗
+
+---
+
+### ❓ Problem:
+
+Root = full power
+👉 Can be dangerous
+
+---
+
+### ✅ Solution:
+
+Run container as non-root user:
+
+```bash
+docker run --user 1000 ubuntu
+```
+
+---
+
+### OR inside Dockerfile:
+
+```dockerfile
+USER 1000
+```
+
+---
+
+### 🧠 Meaning:
+
+* Container runs with limited permissions
+* Safer
+
+---
+
+# ⚠️ 3. Important Question
+
+👉 “Is root inside container same as root on host?”
+
+### ❌ Answer: NO
+
+Even though it says root:
+
+* It is **restricted root**
+* Cannot do everything
+
+---
+
+# 🔐 4. Linux Capabilities (MOST IMPORTANT CONCEPT)
+
+👉 Instead of giving full power, Linux breaks root power into **small permissions**
+
+Examples:
+
+* Reboot system
+* Change network
+* Kill processes
+* Change system time
+
+---
+
+### 🧠 Docker Behavior:
+
+👉 By default:
+
+* Only **limited capabilities are allowed**
+* Dangerous ones are removed
+
+---
+
+# ⚙️ 5. Control Permissions
+
+### ➕ Add permission:
+
+```bash
+docker run --cap-add=NET_ADMIN ubuntu
+```
+
+---
+
+### ➖ Remove permission:
+
+```bash
+docker run --cap-drop=NET_ADMIN ubuntu
+```
+
+---
+
+### 🔥 Full access (dangerous):
+
+```bash
+docker run --privileged ubuntu
+```
+
+
+# 🧠 FINAL SUPER SIMPLE SUMMARY
+
+* Containers share OS → need security
+* Isolation using **namespaces**
+* Default user = **root (but restricted)**
+* Use **non-root user for safety**
+* Docker limits power using **capabilities**
+* You can:
+
+  * add capabilities
+  * remove capabilities
+  * give full access (privileged)
+
+---
+
+# 💥 Interview One-Liner
+
+👉 “Docker containers run as root by default but with limited Linux capabilities. We can restrict or enhance permissions using user settings and capability flags.”
+
+You’re absolutely right:
+
+👉 “When I create Docker images, I don’t usually see USER or non-root… so how is this used in real world?”
+
+Let’s clear this properly 👇
+
+---
+
+# 🧠 1. What YOU are seeing (Reality)
+
+Most basic images:
+
+```dockerfile
+FROM ubuntu
+```
+
+👉 By default:
+
+* Runs as **root**
+* No `USER` specified
+
+✅ This is normal in:
+
+* Tutorials
+* Learning
+* Quick testing
+
+---
+
+# ⚠️ 2. Why this is NOT good in real world
+
+Running as root = risky ❗
+
+👉 If container is hacked:
+
+* Attacker may:
+
+  * access host resources
+  * escape container (rare but possible)
+  * misuse privileges
+
+---
+
+# 🏢 3. What happens in REAL WORLD
+
+### ✅ Companies follow **security best practices**
+
+They **DO NOT run containers as root**
+
+---
+
+# 🔐 4. How it is done in real projects
+
+## ✅ Option 1: In Dockerfile (Best Practice)
+
+```dockerfile
+FROM node:18
+
+# create user
+RUN useradd -m appuser
+
+# switch user
+USER appuser
+
+CMD ["node", "app.js"]
+```
+
+👉 Now container runs as **non-root user**
+
+---
+
+## ✅ Option 2: In Kubernetes (VERY COMMON)
+
+Even if image is root ❗
+👉 Kubernetes can override it
+
+```yaml
+securityContext:
+  runAsUser: 1000
+```
+
+---
+
+## ✅ Option 3: Enforced by DevOps / Security Teams
+
+* Policies block root containers
+* Tools like:
+
+  * Pod Security Standards
+  * OPA / Kyverno
+
+👉 If you try root → deployment fails ❌
+
+
+---
+
+# 🔥 6. Real Interview Answer
+
+If asked:
+
+👉 **“Do containers run as root?”**
+
+Answer:
+
+> By default yes, but in production we avoid it by defining non-root users in Dockerfile or enforcing it via Kubernetes securityContext for better security.
+
+---
+
+# 💡 7. Simple Analogy
+
+* Local learning = no rules 😄
+* Production = strict company rules 🚫
+
+👉 Like:
+
+* At home → do anything
+* In office → follow policies
+
+---
+
+# ⚙️ 8. What YOU should do going forward
+
+Start practicing like real world:
+
+### ✔️ Always try:
+
+```dockerfile
+USER 1000
+```
+
+or
+
+```yaml
+securityContext:
+  runAsNonRoot: true
+```
+
+---
+
+# 🧠 FINAL TAKEAWAY
+
+* Default = root ❗
+* Real world = non-root ✅
+* Controlled using:
+
+  * Dockerfile (`USER`)
+  * Kubernetes (`securityContext`)
+
+---
+
+
