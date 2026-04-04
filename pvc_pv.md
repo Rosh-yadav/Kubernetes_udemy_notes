@@ -141,3 +141,98 @@ You can say:
 
 ---
 
+
+
+This part is showing you the **final step of the storage flow in Kubernetes**:
+
+👉 **How to actually use a PVC inside a Pod**
+
+You already learned:
+
+* PV = storage
+* PVC = request
+* Now → Pod uses PVC
+
+Let’s break it simply 👇
+
+---
+
+# 🔹 1. What is happening here?
+
+👉 The Pod is **not directly using storage**
+
+Instead:
+
+```
+Pod → PVC → PV → Storage
+```
+
+So:
+
+* Pod uses PVC
+* PVC is already connected to PV
+
+---
+
+# 🔹 2. Key Idea
+
+👉 You **never attach PV directly to Pod**
+
+❌ Wrong:
+
+```
+Pod → PV
+```
+
+✅ Correct:
+
+```
+Pod → PVC → PV
+```
+
+---
+
+# 🔹 3. Understanding your YAML
+
+### 🔸 Volume Mount (inside container)
+
+```yaml
+volumeMounts:
+  - mountPath: "/var/www/html"
+    name: mypd
+```
+
+👉 Meaning:
+
+* Inside container → data will be available at:
+
+  ```
+  /var/www/html
+  ```
+
+---
+
+### 🔸 Volume Section (important part)
+
+```yaml
+volumes:
+  - name: mypd
+    persistentVolumeClaim:
+      claimName: myclaim
+```
+
+👉 Meaning:
+
+* This pod is using:
+  👉 **PVC named `myclaim`**
+
+---
+
+
+👉 **“How do you use PVC in a Pod?”**
+
+You can say:
+
+> To use a PVC in a Pod, we reference the claim in the volumes section using persistentVolumeClaim and then mount it inside the container using volumeMounts.
+>  The Pod does not directly use the Persistent Volume; it uses the PVC, which is already bound to a PV.
+
