@@ -1,0 +1,143 @@
+
+# 🔹 4. What exactly is a PV?
+
+👉 A **Persistent Volume is a cluster-wide storage resource**
+
+* Created once
+* Available to all pods
+* Managed by admin
+
+---
+
+# 🔹 5. Key Components of PV
+
+### ✅ 1. Capacity
+
+```yaml
+capacity:
+  storage: 1Gi
+```
+
+👉 How much storage (e.g., 1GB)
+
+---
+
+### ✅ 2. Access Modes
+
+Defines how volume is used:
+
+* `ReadWriteOnce` → one node can read/write
+* `ReadOnlyMany` → many can read only
+* `ReadWriteMany` → many can read/write
+
+---
+
+### ✅ 3. Storage Type
+
+Example from lecture:
+
+### hostPath (basic)
+
+```yaml
+hostPath:
+  path: /data
+```
+
+👉 Uses node’s local storage
+❌ Not for production
+
+---
+
+# 🔹 6. Example PV YAML (Simple)
+
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-vol1
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+```
+
+---
+
+👉 **“What is a Persistent Volume in Kubernetes?”**
+
+You can say:
+
+> A Persistent Volume (PV) is a cluster-wide storage resource created by an administrator. It provides a centralized pool of storage that can be used by applications.
+> It abstracts the underlying storage, allowing users to consume storage without managing the actual infrastructure.
+
+This lecture is explaining the **most important Kubernetes storage concept: PVC (Persistent Volume Claim)** and how it works with PV.
+
+I’ll break it down very simply so you can understand + answer in interviews 👇
+
+---
+
+# 🔹 1. Big Picture (VERY IMPORTANT)
+
+You already know:
+
+* **PV (Persistent Volume)** → created by admin (storage pool)
+* **PVC (Persistent Volume Claim)** → created by user (request)
+
+👉 This lecture explains:
+**How PVC requests storage and gets connected to PV**
+
+
+# 🔹 7. Example PVC YAML
+
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-claim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+```
+
+---
+# 🔹 10. Important Concept: Label Selector
+
+If multiple PVs match:
+
+👉 You can force selection using:
+
+* Labels
+* Selectors
+
+---
+
+# 🔹 11. Modern Approach (IMPORTANT FOR INTERVIEW)
+
+Instead of manual PV creation:
+
+👉 Use:
+
+* **StorageClass**
+* **CSI drivers**
+
+👉 This enables:
+✅ Dynamic provisioning
+✅ Auto creation of storage
+
+
+👉 **“What is PVC and how does it work?”**
+
+You can say:
+
+> A Persistent Volume Claim (PVC) is a request for storage by a user in Kubernetes. It specifies requirements like storage size and access mode.
+> Kubernetes automatically binds the PVC to a suitable Persistent Volume (PV) based on matching criteria. Each PVC is bound to a single PV, and if no PV is available,
+>  the claim remains in a pending state until a matching volume is created.
+
+---
+
