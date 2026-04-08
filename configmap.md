@@ -115,29 +115,184 @@ valueFrom:
 
    * ConfigMaps & Secrets (advanced way)
 
----
+------
 
-# 🧩 Real-Life Example
+# 🧠 What is he trying to teach?
 
-Think like this:
+👉 He is teaching:
 
-👉 Your app needs:
-
-* DB username
-* DB password
-* environment (dev/prod)
-
-Instead of hardcoding:
-
-* You pass them using **env variables**
+> **How to manage environment variables in a better way using ConfigMaps**
 
 ---
 
-# 🧠 One-line summary
+# ❌ Problem (why ConfigMap is needed)
 
-> **Use `env` in Pod YAML to pass key-value data to your container**
+Earlier you were doing this inside Pod:
+
+```yaml
+env:
+  - name: APP_COLOR
+    value: "blue"
+```
+
+👉 Problem:
+
+* If you have **many pods**
+* Same values repeated again and again 😵
+* Hard to update
+
+---
+
+# ✅ Solution: ConfigMap
+
+👉 Think like:
+
+> **ConfigMap = a separate file where you store all KEY=VALUE data**
+
+---
+
+# 🧩 Step 1: Create ConfigMap
+
+## 🔹 Method 1: Command (easy but messy)
+
+```bash
+kubectl create configmap app-config \
+  --from-literal=APP_COLOR=blue \
+  --from-literal=APP_MODE=prod
+```
+
+---
+
+## 🔹 Method 2: YAML file (BEST way)
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+
+data:
+  APP_COLOR: blue
+  APP_MODE: prod
+```
+
+👉 Apply:
+
+```bash
+kubectl apply -f config.yaml
+```
+
+---
+
+# 🧠 How to think?
+
+👉 This is just:
+
+```bash
+APP_COLOR=blue
+APP_MODE=prod
+```
+
+---
+
+# 🚀 Step 2: Use ConfigMap in Pod
+
+Now instead of writing env manually, do this:
+
+```yaml
+containers:
+  - name: my-container
+    image: my-app
+
+    envFrom:
+      - configMapRef:
+          name: app-config
+```
+
+---
+
+# 🎯 What happens now?
+
+👉 Kubernetes:
+
+* Takes all values from ConfigMap
+* Injects into container as env variables
+
+---
+
+# 💡 Final Result inside container
+
+```bash
+APP_COLOR=blue
+APP_MODE=prod
+```
+
+---
+
+# 🔥 Full Flow (VERY IMPORTANT)
+
+👉 Always think in 2 steps:
+
+### 1. Create ConfigMap
+
+(store data)
+
+### 2. Use ConfigMap in Pod
+
+(use data)
+
+---
+
+# 🧠 Super Simple Analogy
+
+👉 Think like:
+
+* ConfigMap = 📦 **storage box**
+* Pod = 👨‍💻 **user**
+
+👉 User takes values from box when needed
+
+---
+
+# ⚠️ Small but important syntax
+
+## ❌ Wrong (common mistake)
+
+```yaml
+env:
+```
+
+## ✅ Correct for ConfigMap
+
+```yaml
+envFrom:
+```
+
+👉 Difference:
+
+* `env` → manual key-value
+* `envFrom` → take everything from ConfigMap
+
+---
+
+# 🧩 Other ways (he mentioned briefly)
+
+You can also:
+
+1. Inject **single value**
+2. Inject as **files (volume)**
+
+👉 But for now:
+✔️ focus on `envFrom`
+
+---
+
+# 🎯 Final One-Line Understanding
+
+> **ConfigMap stores environment variables separately, and Pods use them when needed**
 
 ---
 
 
-Just tell me 👍
+
+
