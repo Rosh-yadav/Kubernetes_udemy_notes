@@ -35,3 +35,41 @@ Selector → used by ReplicaSet
 
 👉 This is how it knows:
 👉 “Which pods are mine?”
+
+
+## 📘 🔹 NodePort Range
+
+👉 Default:
+30000 – 32767
+
+## 📘 🔹 How Service Finds Pods
+
+👉 Uses:
+
+Labels (on pods)
+Selector (in service)
+
+👉 Match → connected
+
+
+## 📘 🔹 Service YAML (Simple)
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: backend
+
+
+## 📘 🔹 Key Parts
+
+type: ClusterIP → internal only
+selector → finds pods
+port → service port
+targetPort → pod port
