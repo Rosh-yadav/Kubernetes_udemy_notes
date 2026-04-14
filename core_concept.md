@@ -16,9 +16,14 @@ etcd	❌ No (only API Server talks to etcd)
         API Server
         /   |    \
        ↓    ↓     ↓
+       
  Scheduler Controller Kubelet
        ↓      ↓        ↓
+
+       
         (all talk to API Server)
+
+        
              ↓
             etcd
 
