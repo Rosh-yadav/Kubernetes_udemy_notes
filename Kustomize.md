@@ -180,3 +180,30 @@ kubectl apply -k overlays/prod
 
 ---
 
+🎯 What he is trying to teach
+
+👉 Both tools solve same problem
+👉 But:
+
+Kustomize = simple + clean
+Helm = powerful + complex
+
+👉 Choose based on your project
+
+🔥 Final Simple Summary
+
+👉 Helm:
+
+Uses templates + values
+More features
+More complex
+
+👉 Kustomize:
+
+Uses base + overlays
+Simple
+Easy to manage
+
+🧠 One-line memory trick
+
+👉 Helm = powerful but complex | Kustomize = simple but limited
