@@ -356,8 +356,95 @@ It tells:
 * what changes to apply
 
 ---
+👉 **Kustomize only prepares YAML… you still need `kubectl` to apply it**
 
+---
 
+# 🔴 Step 1: What you already learned
+
+```bash
+kustomize build k8s/
+```
+
+👉 This does:
+
+* reads files
+* applies changes
+* shows final YAML
+
+❌ BUT → does NOT create anything in Kubernetes
+
+---
+
+# 🤔 So how to actually create resources?
+
+👉 You need to send that output to Kubernetes
+
+---
+
+# 🧪 Simple Concept (IMPORTANT)
+
+👉 Think like this:
+
+* `kustomize build` = prepares file 📄
+* `kubectl apply` = sends it to cluster 🚀
+---
+
+# 🚀 Shortcut (Easier way)
+
+Instead of long command:
+
+```bash
+kubectl apply -k k8s/
+```
+
+👉 `-k` means:
+👉 “use Kustomize here”
+
+✔ Same result, shorter command
+
+---
+
+---
+
+## Option 1 (pipe way)
+
+```bash
+kustomize build k8s/ | kubectl delete -f -
+```
+
+---
+
+## Option 2 (easy way)
+
+```bash
+kubectl delete -k k8s/
+```
+
+---
+# 🔥 Final Simple Summary
+
+👉 Commands you must remember:
+
+* Show config:
+
+  ```bash
+  kustomize build k8s/
+  ```
+
+* Apply:
+
+  ```bash
+  kubectl apply -k k8s/
+  ```
+
+* Delete:
+
+  ```bash
+  kubectl delete -k k8s/
+  ```
+
+---
 
 
 
