@@ -192,18 +192,172 @@ Helm = powerful + complex
 
 🔥 Final Simple Summary
 
-👉 Helm:
+## 👉 Helm:
 
 Uses templates + values
 More features
 More complex
 
-👉 Kustomize:
+## 👉 Kustomize:
 
 Uses base + overlays
 Simple
 Easy to manage
 
-🧠 One-line memory trick
+## 🧠 One-line memory trick
 
 👉 Helm = powerful but complex | Kustomize = simple but limited
+
+#####################################################################################################################################################################################################################################################################################################################################################################################
+
+
+---
+
+# 🧠 Think like this (very simple analogy)
+
+👉 You have **2 files**:
+
+* deployment.yaml
+* service.yaml
+
+👉 But you want to:
+
+* add something extra (like a label)
+* or change something
+
+👉 Instead of editing each file manually…
+
+👉 You create **ONE control file**:
+
+```
+kustomization.yaml
+```
+
+---
+
+# 🧃 Simple Analogy (very easy)
+
+👉 Think:
+
+* deployment.yaml + service.yaml = ingredients 🍅🥕
+* kustomization.yaml = recipe 📖
+
+👉 Recipe tells:
+
+* what ingredients to use
+* what changes to apply
+
+---
+
+# 🔑 What `kustomization.yaml` really does
+
+👉 It just answers 2 questions:
+
+---
+
+## 1️⃣ Which files should I use?
+
+```yaml
+resources:
+  - deployment.yaml
+  - service.yaml
+```
+
+👉 Means:
+👉 “Use these files”
+
+---
+
+## 2️⃣ What changes should I apply?
+
+```yaml
+commonLabels:
+  company: KodeKloud
+```
+
+👉 Means:
+👉 “Add this label to everything”
+
+---
+
+# 🔁 What happens when you run command
+
+```bash
+kustomize build k8s/
+```
+
+👉 It does this:
+
+1. Reads `kustomization.yaml`
+2. Loads your YAML files
+3. Adds changes (label etc.)
+4. Shows final result
+
+---
+
+# ⚠️ Important (this is where most people get confused)
+
+👉 This command:
+
+```bash
+kustomize build
+```
+
+❌ DOES NOT create anything in Kubernetes
+
+👉 It only shows:
+👉 “This is what I will create”
+
+---
+
+# 🚀 To actually create in Kubernetes
+
+```bash
+kustomize build k8s/ | kubectl apply -f -
+```
+
+👉 Now it gets deployed ✔
+
+---
+
+# 🔥 Ultra Simple Example
+
+### Without Kustomize:
+
+You manually edit:
+
+* deployment.yaml
+* service.yaml
+
+😩 Hard work
+
+---
+
+### With Kustomize:
+
+You just write:
+
+```yaml
+commonLabels:
+  company: KodeKloud
+```
+
+👉 Automatically added everywhere ✔
+
+---
+
+# 🎯 Final Understanding
+
+👉 `kustomization.yaml` = boss file
+
+It tells:
+
+* what files to use
+* what changes to apply
+
+---
+
+
+
+
+
