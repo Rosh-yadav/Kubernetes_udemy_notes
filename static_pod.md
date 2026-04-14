@@ -112,3 +112,9 @@ Think like this:
 
 👉 How kubeadm uses static pods (very important for interview)
 👉 OR give you a diagram (this topic becomes crystal clear with it)
+
+
+Default port: 2379
+🔹 One-Line Summary ✨
+
+👉 etcd stores all Kubernetes cluster data and acts as the single source of truth.
